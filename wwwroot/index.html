@@ -1,0 +1,25 @@
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <script type="importmap">
+    {
+      "imports": {
+        "@material/web/": "https://esm.run/@material/web/"
+      }
+    }
+  </script>
+  <script type="module">
+    import '@material/web/all.js';
+    import {styles as typescaleStyles} from '@material/web/typography/md-typescale-styles.js';
+
+    document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
+  </script>
+</head>
+<body>
+  <h1 class="md-typescale-display-medium">Hello, It's NAZZZ-infotect Website</h1>
+  <hr>
+  <br>
+  <a href="/main_web/index.html"><md-elevated-button>Go to main Website</md-elevated-button></a>
+  <br>
+  <br>
+  <a href="seo.html"><md-filled-tonal-button>Show SEO Data</md-filled-tonal-button></a>
+</body>
