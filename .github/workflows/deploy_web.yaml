@@ -40,7 +40,12 @@ jobs:
       - name: Adding wwwroot/main_web
         run: git add wwwroot/main_web
 
-      - name: commit git
+      - name: Adding Email and Name
+        run: |
+          git config --global user.email "nazzz.infotech@gmail.com"
+          git config --global user.name "nazzz-infotech"
+
+      - name: Commit git
         run: git commit -m "skip ci"
 
       - name: Pushing Git
