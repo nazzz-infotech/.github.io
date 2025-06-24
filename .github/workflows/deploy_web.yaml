@@ -1,4 +1,4 @@
-name: Deoply Flutter Website
+name: Deploy Flutter Website
 
 on:
   push:
