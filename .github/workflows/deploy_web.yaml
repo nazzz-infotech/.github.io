@@ -32,9 +32,12 @@ jobs:
       - name: Build Flutter Web
         run: flutter build web --output wwwroot/main_web
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Upload Web build (debugging)
+        uses: actions/upload-artifact@v4
         with:
-          personal_token: ${{ secrets.GH_PAT }}
-          publish_dir: wwwroot   # ✅ Deploy whole wwwroot, including SEO + main_web/
-          publish_branch: gh-pages
+          name: web-app
+          path: wwwroot/mainweb
+          if-no-files-found: warn
+          compression-level: 6
+          overwrite: false
+          include-hidden-files: false
