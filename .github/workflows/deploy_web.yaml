@@ -1,4 +1,4 @@
-name: Deploy Flutter Website
+name: Deploy Flutter Web to Another Repo
 
 on:
   push:
@@ -8,13 +8,12 @@ on:
       - development
 
 jobs:
-  build_flutter_website:
-    # Prevent infinite loop if commit message includes [skip ci]
+  deploy:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout source code
         uses: actions/checkout@v4
 
       - name: Setup Flutter
@@ -23,37 +22,22 @@ jobs:
           flutter-version: '3.32.4'
           channel: stable
 
-      - name: Disable animation and analytics
-        run: |
-          flutter config --no-cli-animations
-          flutter config --no-analytics
-
       - name: Install dependencies
         run: flutter pub get
 
       - name: Build Flutter Web
         run: flutter build web --output wwwroot/main_web
 
-      - name: Configure Git user
+      - name: Deploy to output repo
         run: |
-          git config user.email "nazzz.infotech@gmail.com"
-          git config user.name "nazzz-infotech"
-          
-          # Use personal token to authenticate the push
-           git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}
+          cd wwwroot/main_web
 
-      - name: Commit and push built files
-        run: |
-          git add wwwroot/main_web
-          git diff --cached --quiet || git commit -m "Auto build: update wwwroot/main_web [skip ci]"
-          git push origin HEAD:${{ github.ref_name }}
+          git init
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git remote add origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/nazzz-infotech/web-output.git
 
-      - name: Upload Web build (optional for debugging)
-        uses: actions/upload-artifact@v4
-        with:
-          name: web-app
-          path: wwwroot/main_web
-          if-no-files-found: warn
-          compression-level: 6
-          overwrite: false
-          include-hidden-files: false
+          git checkout -b main
+          git add .
+          git commit -m "Deployed web build from main repo [skip ci]"
+          git push -f origin main
